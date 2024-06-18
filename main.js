@@ -1,124 +1,142 @@
-document.addEventListener('DOMContentLoaded', () =>{
-
-  function displayOnScreen(str){
-    if(str === 'clear'){
-       inputScreen.textContent = ''
-       operationArr = [];
-    } else{
-      value = document.createTextNode(str);
-      inputScreen.appendChild(value);
-      operationArr.push(str);
-    }
-}
-
-function add(){
-  return operationArr.reduce((acc,item) => acc+Number(item), 0);
-}
-function division(){
-  return operationArr.reduce((acc,item) => acc/Number(item));
-}
-
-function operation(){
-  for(let i=0; i<operationArr.length; i++){
-    if(operationArr[i] !== '%' && operationArr[i] !== '/' && operationArr[i] !== '*' && operationArr[i] !== '-' && operationArr[i] !== '+'){
-      continue;
-    } else {
-        switch(operationArr[i]) {
-          case '%':
-            operationArr.splice(operationArr.indexOf('%'),1);
-            mod();
-            break;
-          case '/':
-            operationArr.splice(operationArr.indexOf('/'),1);
-            division();
-            break;
-          case '*':
-            operationArr.splice(operationArr.indexOf('*'),1);
-            multiply();
-            break;
-          case '-':
-            operationArr.splice(operationArr.indexOf('-'),1);
-            subtract();
-            break;
-          case '+':
-            operationArr.splice(operationArr.indexOf('+'),1);
-            ans = add();
-            console.log(ans);
-            inputScreen.textContent = '';
-            value = document.createTextNode(ans);
-            inputScreen.appendChild(value);
-            break;
-        }
-     }
+document.addEventListener('DOMContentLoaded', () => {
+  function displayOnscreen(str){
+    let input = document.createTextNode(str);
+    screen.appendChild(input);
   }
-}
 
+  function add(arr){
+    return arr.reduce((sum, item) => sum += Number(item), 0);
+  }
+
+  function store(str){
+    if(str === '%' || str === '/' || str === '*' || str === '-' || str === '+'){
+      operatorCount++
+      if(operatorCount > 1){
+        operatorCount = 1;
+        console.log(operationArr);
+        operationArr.push(number);
+        console.log(operationArr);
+        let secondOperator = str;
+        operation(secondOperator);
+        number = '';
+      } else  {
+      operationArr.push(number);
+      operationArr.push(str);
+      number = '';
+      }
+    } else {
+      number += str;
+      }
+  }
+
+  function operation(secondOperator){
+    operationArr.forEach(item => {
+      if(item.includes('+')){
+        operationArr.splice(operationArr.indexOf(item), 1);
+        ans = add(operationArr);
+        operationArr = [];
+        operationArr.push(String(ans));
+        if (secondOperator === '='){
+          screen.textContent = `${ans}`
+        } else {
+          operationArr.push(secondOperator)
+          console.log(operationArr);
+          operatorCount++;
+          screen.textContent = `${ans}${secondOperator}`
+        }
+      }
+    })
+
+  }
+
+  const inputBtn = document.querySelector('.inputs');
+  const screen = document.querySelector('.display');
   let operationArr = [];
-  const inputContainer = document.querySelector('.inputs');
-  const inputScreen = document.querySelector('.display');
-  inputContainer.addEventListener('click', event => {
-    target = event.target;
-    console.log(target.id);
-    switch(target.id){
-      
-      case 'clear':
-        displayOnScreen('clear');
-        break;
-      case 'sign':
+  let operatorCount = '';
+  let number = '';
+  inputBtn.addEventListener('click' , event => {
 
-        break;
+    switch(event.target.id){
+      case 'clear':
+        screen.textContent = ''
+        operationArr = [];
+        operatorCount = 0;
+        number = '';
+      break;
+      case 'sign':
+      break;
       case 'mod':
-        displayOnScreen('%');
-        break;
+        displayOnscreen('%');
+        store('%')
+      break;
       case 'div':
-        displayOnScreen('/');
+        displayOnscreen('/');
+        store('/')
       break;
       case 'one':
-        displayOnScreen('1');
+        displayOnscreen('1');
+        store('1')
       break;
       case 'two':
-        displayOnScreen('2');
+        displayOnscreen('2');
+        store('2')
       break;
       case 'three':
-        displayOnScreen('3');
+        displayOnscreen('3');
+        store('3')
       break;
       case 'multi':
-        displayOnScreen('*');
+        displayOnscreen('*');
+        store('*');
       break;
       case 'four':
-        displayOnScreen('4');
+        displayOnscreen('4');
+        store('4');
       break;
       case 'five':
-        displayOnScreen('5');
+        displayOnscreen('5');
+        store('5');
       break;
       case 'six':
-        displayOnScreen('6');
+        displayOnscreen('6');
+        store('6');
       break;
       case 'minus':
-        displayOnScreen('-');
+        displayOnscreen('-');
+        store('-');
       break;
       case 'seven':
-        displayOnScreen('7');
+        displayOnscreen('7');
+        store('7');
       break;
       case 'eight':
-        displayOnScreen('8');
+        displayOnscreen('8');
+        store('8');
       break;
       case 'nine':
-        displayOnScreen('9');
+        displayOnscreen('9');
+        store('9');
       break;
       case 'add':
-        displayOnScreen('+');
-        break;
+        displayOnscreen('+');
+        store('+');
+      break;
       case 'zero':
-        displayOnScreen('0');
-        break;
+        displayOnscreen('0');
+        store('0');
+      break;
       case 'decimal':
-        displayOnScreen('.');
-        break;
+        displayOnscreen('.');
+        store('.');
+      break;
       case 'equal':
-        operation();
+        operationArr.push(number);
+        number = '';
+        operatorCount = 0;
         console.log(operationArr);
-        break;
-  }
-  });
-});
+        operation('=');
+        console.log(operatorCount);
+      break;
+    }
+  })
+})
