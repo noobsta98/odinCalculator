@@ -10,7 +10,7 @@ html{
   padding: 0;
   margin: 0;
   box-sizing: inherit;
-  /* outline: 2px solid black; */
+  /* outline: 2px solid white; */
 }
 
 body{
@@ -27,7 +27,8 @@ body{
   margin: auto;
   height: 533px;
   width: 445px;
-  background-color: black;
+  background-color: rgb(123, 118, 118);
+  border-radius: 10px;
 }
 
 .calculator{
@@ -36,46 +37,42 @@ body{
   flex: 1;
   margin: 10px;
   flex-direction: column;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
 }
 
 .display{
   flex: 3;
-  margin: 5px;
-}
-
-label{
-  display: flex;
-  height: 100%;
-}
-
-#screen{
-  min-width: 0;
-  flex: 1;
-  align-items: stretch;
-  background-color: #B2B9B7;
-  font-size: 40px;
+  margin-bottom: 10px;
+  background-color: #B2B9b7;
+  align-self: stretch;
+  outline: 3px solid black;
+  text-align: right;
+  font-size: 71px;
+  font-family: monospace;
+  max-width: 430px;
 }
 
 .inputs{
   flex: 11;
   display: flex;
-  align-items: start;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 1px;
+  gap: 3px;
+  justify-content: start;
+  width: 430px;
 }
 
 button{
-  width: 106px;
-  height: 80px;
+  width: 105px;
   border-radius: 5px;
   font-family: monospace;
   font-size: 24px;
+  outline: 1px solid black;
 }
 
 .bigbutton{
-  flex:3;
+  min-width: 100px;
+  flex: 2;
   background-color: #217C7E;
 }
 
