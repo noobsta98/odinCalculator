@@ -5,17 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function add(arr){
-    return arr.reduce((sum, item) => sum += Number(item), 0);
+    return arr.reduce((sum, item) => parseFloat(sum) + parseFloat(item));
+  }
+
+  function sub(arr){
+    return arr.reduce((sum, item) => parseFloat(sum) - parseFloat(item));
   }
 
   function store(str){
-    if(str === '%' || str === '/' || str === '*' || str === '-' || str === '+'){
+    if(['%','/','*','-','+'].includes(str)){
       operatorCount++
       if(operatorCount > 1){
         operatorCount = 1;
-        console.log(operationArr);
         operationArr.push(number);
-        console.log(operationArr);
         let secondOperator = str;
         operation(secondOperator);
         number = '';
@@ -26,28 +28,53 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       number += str;
+      console.log(number);
       }
   }
 
   function operation(secondOperator){
-    operationArr.forEach(item => {
-      if(item.includes('+')){
-        operationArr.splice(operationArr.indexOf(item), 1);
-        ans = add(operationArr);
+    for(let i=0; i<operationArr.length; i++){
+      if (operationArr[i] === '+' || operationArr[i] === '-' || operationArr[i] === '%' || operationArr[i] === '/' || operationArr[i] === '*'){
+        console.log(operationArr)
+        caseSelector = operationArr.splice(operationArr.indexOf(operationArr[i]), 1)[0];
+        console.log(operationArr)
+        i--;
+      } else {
+        continue;
+      }
+    }
+        let ans;
+        switch(caseSelector[0]){
+          case '+':
+            ans = add(operationArr);
+            break;
+          case '-':
+            ans = sub(operationArr);
+            break;
+          case '%':
+            ans = mod(operationArr);
+            break;
+          case '/':
+            ans = div(operationArr);
+            break;
+          case '*':
+            ans = multi(operationArr);
+            break;
+        }
         operationArr = [];
+        number = 0;
         operationArr.push(String(ans));
+        console.log(operationArr);
         if (secondOperator === '='){
-          screen.textContent = `${ans}`
+          screen.textContent = `${operationArr[0]}`;
         } else {
-          operationArr.push(secondOperator)
+          operationArr.push(secondOperator);
           console.log(operationArr);
           operatorCount++;
-          screen.textContent = `${ans}${secondOperator}`
+          screen.textContent = `${operationArr[0]}${secondOperator}`;
         }
-      }
-    })
-
   }
+
 
   const inputBtn = document.querySelector('.inputs');
   const screen = document.querySelector('.display');
@@ -62,81 +89,79 @@ document.addEventListener('DOMContentLoaded', () => {
         operationArr = [];
         operatorCount = 0;
         number = '';
-      break;
+        break;
       case 'sign':
-      break;
+        break;
       case 'mod':
         displayOnscreen('%');
         store('%')
-      break;
+        break;
       case 'div':
         displayOnscreen('/');
         store('/')
-      break;
+        break;
       case 'one':
         displayOnscreen('1');
         store('1')
-      break;
+        break;
       case 'two':
         displayOnscreen('2');
         store('2')
-      break;
+        break;
       case 'three':
         displayOnscreen('3');
         store('3')
-      break;
+        break;
       case 'multi':
         displayOnscreen('*');
         store('*');
-      break;
+        break;
       case 'four':
         displayOnscreen('4');
         store('4');
-      break;
+        break;
       case 'five':
         displayOnscreen('5');
         store('5');
-      break;
+        break;
       case 'six':
         displayOnscreen('6');
         store('6');
-      break;
+        break;
       case 'minus':
         displayOnscreen('-');
         store('-');
-      break;
+        break;
       case 'seven':
         displayOnscreen('7');
         store('7');
-      break;
+        break;
       case 'eight':
         displayOnscreen('8');
         store('8');
-      break;
+        break;
       case 'nine':
         displayOnscreen('9');
         store('9');
-      break;
+        break;
       case 'add':
         displayOnscreen('+');
         store('+');
-      break;
+        break;
       case 'zero':
         displayOnscreen('0');
         store('0');
-      break;
+        break;
       case 'decimal':
         displayOnscreen('.');
         store('.');
-      break;
+        break;
       case 'equal':
         operationArr.push(number);
-        number = '';
         operatorCount = 0;
         console.log(operationArr);
         operation('=');
-        console.log(operatorCount);
-      break;
+        break;
     }
   })
-})
+});
