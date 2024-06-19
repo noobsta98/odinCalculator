@@ -5,13 +5,54 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function add(arr){
-    return arr.reduce((sum, item) => parseFloat(sum) + parseFloat(item));
+    return arr.reduce((sum, item) => {
+      if(item === ''){
+        return sum;
+      } else {
+        return parseFloat(sum) + parseFloat(item);
+      }
+    });
   }
 
   function sub(arr){
-    return arr.reduce((sum, item) => parseFloat(sum) - parseFloat(item));
+    return arr.reduce((sum, item) => {
+      if(item === ''){
+        return sum;
+      } else {
+        return parseFloat(sum) - parseFloat(item);
+      }
+    });
   }
 
+  function div(arr){
+    return arr.reduce((sum, item) => {
+      if(item === ''){
+        return sum;
+      } else {
+        return parseFloat(sum) / parseFloat(item);
+      }
+    });  
+  }
+
+  function mod(arr){
+    return arr.reduce((sum, item) => {
+      if(item === ''){
+        return sum;
+      } else {
+        return parseFloat(sum) % parseFloat(item);
+      }
+    });
+  }
+
+  function multi(arr){
+    return arr.reduce((sum, item) => {
+      if(item === ''){
+        return sum;
+      } else {
+        return parseFloat(sum) * parseFloat(item);
+      }
+    });
+  }
   function store(str){
     if(['%','/','*','-','+'].includes(str)){
       operatorCount++
@@ -30,6 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
       number += str;
       console.log(number);
       }
+  }
+
+  function clear(){
+    screen.textContent = ''
+    operationArr = [];
+    operatorCount = 0;
+    number = '';
+    screen.textContent = '';
+  }
+
+  function checkDecimal(){
+    let decimalCount = 0;
+    for(let i=0; i<number.length; i++){
+      if(number[i].includes('.')){
+        decimalCount++
+      }
+    }
+    if(decimalCount > 1) {
+      alert('Invalid number')
+      clear();
+    }
   }
 
   function operation(secondOperator){
@@ -62,16 +124,18 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         }
         operationArr = [];
-        number = 0;
+        number = '';
         operationArr.push(String(ans));
         console.log(operationArr);
         if (secondOperator === '='){
           screen.textContent = `${operationArr[0]}`;
+          console.log(`empty ${number}`)
         } else {
           operationArr.push(secondOperator);
           console.log(operationArr);
           operatorCount++;
           screen.textContent = `${operationArr[0]}${secondOperator}`;
+          console.log(`empty ${number}`)
         }
   }
 
@@ -85,12 +149,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch(event.target.id){
       case 'clear':
-        screen.textContent = ''
-        operationArr = [];
-        operatorCount = 0;
-        number = '';
+        clear();
         break;
       case 'sign':
+        if(!number){
+          if(operationArr[0]){
+            if(operationArr[0] == '0'){
+              alert('Invalid');
+            } else{
+            operationArr[0] = -operationArr[0];
+            screen.textContent = operationArr;
+            }
+          }
+        } else if(number){
+          if(operationArr[0]){
+            if(operationArr[0] == '0'){
+              alert('Invalid');
+          } else{
+              operationArr[0] = -operationArr[0];
+              screen.textContent = `${operationArr}${number}`
+            }
+          } else {
+              number = - number;
+              screen.textContent = number;
+            }
+        }
+        // }else if (number == '0'){
+        //   alert('invalid');
+        // } else if (number) {
+        //   if(operationArr[0]){
+        //     operationArr[0] = -operationArr[0];
+        //     screen.textContent = operationArr;
+        //   }
+        // number = -number;
+        // screen.textContent = number;
+        // }
         break;
       case 'mod':
         displayOnscreen('%');
@@ -155,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'decimal':
         displayOnscreen('.');
         store('.');
+        checkDecimal();
         break;
       case 'equal':
         operationArr.push(number);
