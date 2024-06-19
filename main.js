@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
         operation(secondOperator);
         number = '';
       } else  {
-      operationArr.push(number);
-      operationArr.push(str);
-      number = '';
-      }
+        if(number) operationArr.push(number); 
+        operationArr.push(str);
+        number = '';
+        }
     } else {
       number += str;
       console.log(number);
@@ -125,10 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         operationArr = [];
         number = '';
-        operationArr.push(String(ans));
+        operationArr.push(String(ans.toFixed(2)));
         console.log(operationArr);
         if (secondOperator === '='){
           screen.textContent = `${operationArr[0]}`;
+          number = operationArr[0];
+          operationArr = [];
           console.log(`empty ${number}`)
         } else {
           operationArr.push(secondOperator);
@@ -157,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(operationArr[0] == '0'){
               alert('Invalid');
             } else{
-            operationArr[0] = -operationArr[0];
+            operationArr[0] = String(-operationArr[0]);
             screen.textContent = operationArr;
             }
           }
@@ -166,24 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if(operationArr[0] == '0'){
               alert('Invalid');
           } else{
-              operationArr[0] = -operationArr[0];
-              screen.textContent = `${operationArr}${number}`
+              operationArr[0] = String(-operationArr[0]);
+              screen.textContent = `${operationArr[0]}${operationArr[1]}${number}`
             }
           } else {
               number = - number;
               screen.textContent = number;
             }
         }
-        // }else if (number == '0'){
-        //   alert('invalid');
-        // } else if (number) {
-        //   if(operationArr[0]){
-        //     operationArr[0] = -operationArr[0];
-        //     screen.textContent = operationArr;
-        //   }
-        // number = -number;
-        // screen.textContent = number;
-        // }
         break;
       case 'mod':
         displayOnscreen('%');
