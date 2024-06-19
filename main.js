@@ -5,54 +5,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function add(arr){
-    return arr.reduce((sum, item) => {
-      if(item === ''){
-        return sum;
-      } else {
-        return parseFloat(sum) + parseFloat(item);
-      }
-    });
+    return arr.reduce((sum, item) => parseFloat(sum) + parseFloat(item));
   }
 
   function sub(arr){
-    return arr.reduce((sum, item) => {
-      if(item === ''){
-        return sum;
-      } else {
-        return parseFloat(sum) - parseFloat(item);
-      }
-    });
+    return arr.reduce((sum, item) => parseFloat(sum) - parseFloat(item));
   }
 
   function div(arr){
-    return arr.reduce((sum, item) => {
-      if(item === ''){
-        return sum;
-      } else {
-        return parseFloat(sum) / parseFloat(item);
-      }
-    });  
+    return arr.reduce((sum, item) => parseFloat(sum) / parseFloat(item));
   }
 
   function mod(arr){
-    return arr.reduce((sum, item) => {
-      if(item === ''){
-        return sum;
-      } else {
-        return parseFloat(sum) % parseFloat(item);
-      }
-    });
+    return arr.reduce((sum, item) => parseFloat(sum) % parseFloat(item));
   }
 
   function multi(arr){
-    return arr.reduce((sum, item) => {
-      if(item === ''){
-        return sum;
-      } else {
-        return parseFloat(sum) * parseFloat(item);
-      }
-    });
+    return arr.reduce((sum, item) => parseFloat(sum) * parseFloat(item));
   }
+
+  //Storing operator and operands in operationArr
   function store(str){
     if(['%','/','*','-','+'].includes(str)){
       operatorCount++
@@ -63,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         operation(secondOperator);
         number = '';
       } else  {
-        if(number) operationArr.push(number); 
+        if(number) operationArr.push(number);  // to eliminate number = ''(empty string) from being pushed into operationArr
         operationArr.push(str);
         number = '';
         }
@@ -106,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
         let ans;
-        switch(caseSelector[0]){
+        switch(caseSelector){
           case '+':
             ans = add(operationArr);
             break;
@@ -125,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         operationArr = [];
         number = '';
-        operationArr.push(String(ans.toFixed(2)));
+        operationArr.push(String(ans));
         console.log(operationArr);
         if (secondOperator === '='){
           screen.textContent = `${operationArr[0]}`;
@@ -145,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputBtn = document.querySelector('.inputs');
   const screen = document.querySelector('.display');
   let operationArr = [];
-  let operatorCount = '';
+  let operatorCount = 0;
   let number = '';
   inputBtn.addEventListener('click' , event => {
 
@@ -160,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
               alert('Invalid');
             } else{
             operationArr[0] = String(-operationArr[0]);
-            screen.textContent = operationArr;
+            screen.textContent = `${operationArr[0]}${operationArr[1]}`;
             }
           }
         } else if(number){
@@ -243,10 +215,12 @@ document.addEventListener('DOMContentLoaded', () => {
         checkDecimal();
         break;
       case 'equal':
-        operationArr.push(number);
-        operatorCount = 0;
-        console.log(operationArr);
-        operation('=');
+        if(operationArr.length >= 2 && number){
+          operationArr.push(number);
+          operatorCount = 0;
+          console.log(operationArr);
+          operation('=');
+        }
         break;
     }
   })
